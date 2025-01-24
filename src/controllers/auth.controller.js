@@ -1,6 +1,6 @@
-const User = require('../models/user.model');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import User from '../models/user.model.js';  // Import using ES6 syntax
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -13,7 +13,7 @@ const registerUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already in use' });
+      return res.status(400).json({ message: 'Email already exist' });
     }
 
     const user = new User({ name, email, password });
@@ -64,4 +64,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+export { registerUser, loginUser };  // Exporting functions using ES6 syntax
