@@ -64,4 +64,39 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser };  // Exporting functions using ES6 syntax
+const editUserProfile = async (req, res) => {
+  try {
+    const { name, profilePhoto, experience, location, preference, skills, interests } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, profilePhoto, experience, location, preference, skills, interests },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Delete user profile
+const deleteUserProfile = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.user.id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+export { registerUser, loginUser, editUserProfile, deleteUserProfile };  // Exporting functions using ES6 syntax
