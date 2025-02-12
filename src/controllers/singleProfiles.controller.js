@@ -6,7 +6,7 @@ export const getSingleProfile = async (req, res) => {
     const user = await User.findById(req.params.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const posts = await Post.find({ user: req.params.id });
+    const posts = await Post.find({ userId: req.params.id });
 
     res.status(200).json({ user, posts });
   } catch (error) {
