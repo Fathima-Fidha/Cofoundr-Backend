@@ -4,7 +4,8 @@ import User from '../models/user.model.js';
 // Add a new post
 export const addPost = async (req, res) => {
   try {
-    const { userId, content, category, image } = req.body;
+    const { userId, content, category } = req.body;
+    const image = req.file ? req.file.path : null;
 
     if (!userId || !content || !category) {
       return res.status(400).json({ message: 'User ID, content, and category are required' });
