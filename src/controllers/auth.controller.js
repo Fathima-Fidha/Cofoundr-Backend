@@ -67,20 +67,29 @@ const loginUser = async (req, res) => {
 const editUserProfile = async (req, res) => {
   try {
     const { name, profilePhoto, experience, location, preference, skills, interests } = req.body;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { name, profilePhoto, experience, location, preference, skills, interests },
+      {
+        name,
+        profilePhoto,
+        experience,
+        location,
+        preference,
+        skills: skills ? skills.split(",").map((skill) => skill.trim()) : [],
+        interests: interests ? interests.split(",").map((interest) => interest.trim()) : [],
+      },
       { new: true }
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
