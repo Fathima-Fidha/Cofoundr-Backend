@@ -1,4 +1,6 @@
 import express from 'express';
+import './src/config/setupUploadDir.js'; // This will run and create the directory before server starts
+
 import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
 import cors from 'cors';
@@ -14,7 +16,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true, // Required for JWT cookies
+  })
+);
+
+
 app.use(express.json()); // Parses incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded data
 
