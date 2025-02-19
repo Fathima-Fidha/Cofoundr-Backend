@@ -1,6 +1,6 @@
 import express from 'express';
 import './src/config/setupUploadDir.js'; // This will run and create the directory before server starts
-
+import path from 'path';
 import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
 import cors from 'cors';
@@ -24,8 +24,14 @@ app.use(
 );
 
 
+
 app.use(express.json()); // Parses incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded data
+
+// Serve static files from the uploads folder
+const __dirname = path.resolve(); // Get the root directory
+// Serve static files from the uploads folder inside src
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);

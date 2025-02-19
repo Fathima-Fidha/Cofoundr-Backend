@@ -4,21 +4,19 @@ import User from '../models/user.model.js';
 
 export const getHomeFeed = async (req, res) => {
   try {
-    // console.log(req.user, 'ol');
-
-
     const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!user.preference) {
-      return res.status(400).json({ message: 'Complete your profile to view posts' });
+    if (!user.preferences) {
+      return res
+        .status(400)
+        .json({ message: "Complete your profile to view posts" });
     }
 
-
-    // const post = await Post.find().sort({ createdAt: -1 });
-    // console.log(post);
-
-    const posts = await Post.find({ category: user.preference }).sort({ createdAt: -1 });
+    // Fetch posts based on the user's preferences and populate user data
+    const posts = await Post.find({ category: user.preferences })
+      .populate("userId", "name profilePhoto") // ✅ Fetches both name and profilePhoto
+      .sort({ createdAt: -1 });
 
     // Increment impressions count for each post
     await Promise.all(
@@ -31,6 +29,8 @@ export const getHomeFeed = async (req, res) => {
     res.status(200).json(posts);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+

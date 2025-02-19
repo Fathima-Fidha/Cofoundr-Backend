@@ -64,31 +64,24 @@ const loginUser = async (req, res) => {
   }
 };
 
-const editUserProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
   try {
-    const { name, profilePhoto, experience, location, preference, skills, interests } = req.body;
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        name,
-        profilePhoto,
-        experience,
-        location,
-        preference,
-        skills: skills ? skills.split(",").map((skill) => skill.trim()) : [],
-        interests: interests ? interests.split(",").map((interest) => interest.trim()) : [],
-      },
-      { new: true }
-    );
+    const { name, profilePhoto, experience, location, preferences, skills, interests } = req.body;
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    user.name = name || user.name;
+    user.profilePhoto = profilePhoto || user.profilePhoto;
+    user.experience = experience || user.experience;
+    user.location = location || user.location;
+    user.preferences = preferences || user.preferences;
+    user.skills = skills || user.skills;
+    user.interests = interests || user.interests;
 
-    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+    await user.save();
+    res.json(user);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -108,4 +101,4 @@ const deleteUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-export { registerUser, loginUser, editUserProfile, deleteUserProfile };  // Exporting functions using ES6 syntax
+export { registerUser, loginUser, updateProfile, deleteUserProfile };  // Exporting functions using ES6 syntax

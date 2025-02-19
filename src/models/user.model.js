@@ -9,10 +9,10 @@ const UserSchema = new mongoose.Schema(
     profilePhoto: { type: String },
     experience: { type: String },
     location: { type: String },
-    preference: { type: String },
+    preferences: { type: [String] },
     skills: { type: [String] },
     profileViews: { type: Number, default: 0 },
-    interests: { type: [String] },
+    interests: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

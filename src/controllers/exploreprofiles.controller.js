@@ -24,7 +24,7 @@ export const exploreProfiles = async (req, res) => {
     };
 
     // Categorize users into three sections
-    let preferenceProfiles = [];
+    let preferencesProfiles = [];
     let skillsProfiles = [];
     let locationProfiles = [];
 
@@ -37,8 +37,8 @@ export const exploreProfiles = async (req, res) => {
       }));
 
       // Profiles Based on Preference
-      if (user.preference && currentUser.preference && user.preference === currentUser.preference) {
-        preferenceProfiles.push({
+      if (user.preferences && currentUser.preferences && user.preferences === currentUser.preferences) {
+        preferencesProfiles.push({
           _id: user._id,
           name: user.name,
           location: user.location,
@@ -74,7 +74,7 @@ export const exploreProfiles = async (req, res) => {
     }
 
     res.status(200).json({
-      preferenceProfiles,
+      preferencesProfiles,
       skillsProfiles,
       locationProfiles,
     });
