@@ -13,10 +13,16 @@ export const getHomeFeed = async (req, res) => {
         .json({ message: "Complete your profile to view posts" });
     }
 
+
     // Fetch posts based on the user's preferences and populate user data
-    const posts = await Post.find({ category: user.preferences })
-      .populate("userId", "name profilePhoto") // ✅ Fetches both name and profilePhoto
+    // const posts = await Post.find({ userId: { $ne: req.user.id }, })
+    const posts = await Post.find({
+      category: req.user.preferences,
+      userId: { $ne: req.user.id }
+    })
+      .populate("userId", "name profilePhoto")
       .sort({ createdAt: -1 });
+
 
     // Increment impressions count for each post
     await Promise.all(
