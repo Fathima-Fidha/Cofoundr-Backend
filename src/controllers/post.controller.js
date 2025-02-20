@@ -113,7 +113,7 @@ export const getSavedPosts = async (req, res) => {
       model: "Post",
       select: "content category image createdAt",
     });
-
+    console.log("Saved Posts Retrieved:", savedPosts);
     res.status(200).json(savedPosts.map((saved) => saved.postId));
   } catch (error) {
     console.error("Error in getSavedPosts:", error);
@@ -124,11 +124,10 @@ export const getSavedPosts = async (req, res) => {
 // Remove saved post
 export const removeSavedPost = async (req, res) => {
   try {
-    const { postId } = req.params;
-    const userId = req.user.id;
 
 
-    const deleted = await SavedPost.findOneAndDelete({ userId, postId });
+
+    const deleted = await SavedPost.findByIdAndDelete(req.params.id);
 
     if (!deleted) return res.status(404).json({ message: "Post not found in saved list" });
 
