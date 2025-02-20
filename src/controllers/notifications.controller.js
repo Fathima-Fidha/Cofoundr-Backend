@@ -9,3 +9,13 @@ export const getNotifications = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const sendNotification = async (req, res) => {
+  try {
+    const { senderId, receiverId, message } = req.body;
+    const notification = await Notification.create({ senderId, receiverId, message });
+    res.status(201).json(notification);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to send notification" });
+  }
+};

@@ -11,6 +11,7 @@ import exploreProfilesRoutes from './src/routes/exploreProfiles.route.js';
 import notificationsRoutes from './src/routes/notification.route.js';
 import singleProfileRoutes from './src/routes/singleProfile.route.js';
 import postRoutes from './src/routes/post.route.js';
+import interestRoutes from './src/routes/interest.route.js';
 
 dotenv.config();
 connectDB();
@@ -41,6 +42,7 @@ app.use('/api', exploreProfilesRoutes);
 app.use('/api', notificationsRoutes);
 app.use('/api', singleProfileRoutes);
 app.use('/api', postRoutes);
+app.use('/api', interestRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
