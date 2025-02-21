@@ -1,2 +1,3 @@
-# Ignore environment variables file
+# Ignore sensitive configuration files
 .env
+src/config/serviceAccountKey.json
