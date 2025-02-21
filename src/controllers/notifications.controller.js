@@ -46,6 +46,8 @@ export const sendNotification = async (req, res) => {
 };
 
 export const saveFcmToken = async (req, res) => {
+  console.log("check");
+  
   try {
     const { fcmToken } = req.body;
     const userId = req.user.id; // Assuming the user is authenticated

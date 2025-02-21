@@ -1,6 +1,8 @@
 // firebase.js
 import admin from 'firebase-admin';
-import serviceAccount from './serviceAccountKey.json' assert { type: 'json' };; // Path to your Firebase Admin SDK JSON file
+import serviceAccount from './serviceAccountKey.js';
+
+// Path to your Firebase Admin SDK JSON file
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
