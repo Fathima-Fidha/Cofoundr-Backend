@@ -124,17 +124,23 @@ export const getSavedPosts = async (req, res) => {
 // Remove saved post
 export const removeSavedPost = async (req, res) => {
   try {
+    const { postId } = req.params; // Extract postId from URL
+    const userId = req.user.id; // Get userId from the authenticated user
 
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Invalid Post ID" });
+    }
 
+    const deletedPost = await SavedPost.findOneAndDelete({ postId, userId });
 
-    const deleted = await SavedPost.findByIdAndDelete(req.params.id);
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found in saved items" });
+    }
 
-    if (!deleted) return res.status(404).json({ message: "Post not found in saved list" });
-
-    res.status(200).json({ message: "Post removed from saved" });
-
+    res.status(200).json({ message: "Post unsaved successfully", postId });
   } catch (error) {
-
+    console.error("Error removing saved post:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
+

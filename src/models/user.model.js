@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema(
     profileViews: { type: Number, default: 0 },
     interests: { type: Number, default: 0 },
     fcmToken: { type: String },
+    // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
   },
   { timestamps: true }
 );
