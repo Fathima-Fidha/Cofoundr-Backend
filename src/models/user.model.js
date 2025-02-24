@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema(
     skills: { type: [String], set: (skills) => skills.map((s) => s.toLowerCase()) },
     profileViews: { type: Number, default: 0 },
     interests: { type: Number, default: 0 },
-    fcmToken: { type: String },
+    fcmToken: { type: String,default: null },
     // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
   },
   { timestamps: true }

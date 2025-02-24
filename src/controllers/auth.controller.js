@@ -4,33 +4,39 @@ import bcrypt from 'bcryptjs';
 
 // Register a new user
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  console.log(req.body);
+  
+  const { name, email, password, fcmToken } = req.body;
 
   if (!name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exist' });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
-    const user = new User({ name, email, password });
+    // Create new user with fcmToken
+    const user = new User({ name, email, password, fcmToken });
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, fcmToken: user.fcmToken },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error in registerUser:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Login a user
 const loginUser = async (req, res) => {

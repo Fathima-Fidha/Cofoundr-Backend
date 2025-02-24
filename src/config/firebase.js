@@ -23,6 +23,8 @@ admin.initializeApp({
 });
 
 export const sendPushNotification = async (token, message) => {
+  console.log(token, message, 'loi');
+  
   try {
     const payload = {
       notification: {
