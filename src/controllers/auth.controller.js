@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 // Register a new user
 const registerUser = async (req, res) => {
   console.log(req.body);
-  
+
   const { name, email, password, fcmToken } = req.body;
 
   if (!name || !email || !password) {
@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(409).json({ message: "Email already exists" });
     }
 
     // Create new user with fcmToken
