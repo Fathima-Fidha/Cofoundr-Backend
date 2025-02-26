@@ -34,6 +34,10 @@ export const sendNotification = async (req, res) => {
 
      // Fetch the receiver's FCM token
      const receiver = await User.findById(receiverId);
+     console.log(req.body,'req.body');
+     console.log(receiver,'reciever');
+     
+     
      if (receiver?.fcmToken) {
          await sendPushNotification(receiver.fcmToken, message);
      }
