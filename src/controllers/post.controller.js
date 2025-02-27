@@ -41,7 +41,11 @@ export const editPost = async (req, res) => {
     const { postId } = req.params;
     const { content, category, image } = req.body;
 
-    const post = await Post.findOne({ postId });
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Invalid Post ID format" });
+    }
+
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
@@ -63,7 +67,11 @@ export const deletePost = async (req, res) => {
   try {
     const { postId } = req.params;
 
-    const post = await Post.findOne({ postId });
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Invalid Post ID format" });
+    }
+
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
